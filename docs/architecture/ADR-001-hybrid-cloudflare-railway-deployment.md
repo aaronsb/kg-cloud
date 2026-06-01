@@ -26,7 +26,7 @@ Kappa Graph is four moving parts:
 
 - **viz-app** — a React/TypeScript single-page app.
 - **API** — a Python FastAPI service.
-- **Database** — Postgres 17 + Apache AGE + a custom Rust `graph_accel` extension.
+- **Database** — Postgres 18 + Apache AGE + a custom Rust `graph_accel` extension.
 - **Object storage** — Garage (S3-compatible).
 
 Two prior investigations constrain the design:

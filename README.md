@@ -33,7 +33,7 @@ flowchart TB
     subgraph RW["🚂 Railway — core (knowledge-graph-system)"]
         direction TB
         API["<b>API</b> · FastAPI"]
-        DB[("<b>Postgres 17</b> + Apache AGE + graph_accel<br/>persistent volume · in-RAM graph cache")]
+        DB[("<b>Postgres 18</b> + Apache AGE + graph_accel<br/>persistent volume · in-RAM graph cache")]
     end
 
     Browser -->|"static"| Pages
@@ -57,7 +57,7 @@ flowchart TB
 | Lives on Cloudflare | Lives on Railway |
 |---|---|
 | viz-app (Pages) | FastAPI API |
-| Object storage (R2, replaces Garage) | Postgres 17 + Apache AGE + `graph_accel` |
+| Object storage (R2, replaces Garage) | Postgres 18 + Apache AGE + `graph_accel` |
 | Edge API gateway (Worker, optional) | Persistent volume + backups |
 
 The decision and its alternatives are recorded in
