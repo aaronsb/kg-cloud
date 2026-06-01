@@ -1,0 +1,4 @@
+[submodule "vendor/kg"]
+	path = vendor/kg
+	url = https://github.com/aaronsb/knowledge-graph-system.git
+	branch = release

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+.wrangler/
+.open-next/
+
+# Cloudflare Worker local secrets — NEVER commit
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# Environment files — secrets live in GitHub Environment Secrets
+.env
+.env.*
+!.env.example
+
+# Generated runtime config (stamped per-deploy from config/ templates)
+config.js
+config.local.js
+
+# Logs / OS / editor cruft
+*.log
+npm-debug.log*
+.DS_Store
+.idea/
+.vscode/
+*.swp
