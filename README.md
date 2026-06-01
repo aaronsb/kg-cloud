@@ -18,22 +18,40 @@ extension that loads the whole graph into RAM and is ABI-locked to the `apache/a
 image. Cloudflare has no persistent-volume database primitive, so the database
 lives where it can: **Railway** (see the kg feasibility study).
 
-```
-                          +-------------------- Cloudflare (edge) --------------------+
-   Browser --------------> |  Pages: kg-viz-<env>     viz-app SPA, build-once         |
-        |                 |     '- /config.js        window.APP_CONFIG, per-env       |
-        |   /api/* ------>|  Worker: kg-gateway-<env>  edge gateway (optional, phased)|
-        |                 |     |- proxy/route -> Railway API origin                  |
-        |                 |     |- R2 binding         object storage (replaces Garage)|
-        |                 |     '- Hyperdrive         only if a Worker hits PG direct |
-        |                 |  R2 bucket: kg-assets-<env>                               |
-        |                 +----------------------------------------------------------+
-        |                                         | HTTPS (origin trust token)
-        v                                         v
-                          +-------------------- Railway (core) ----------------------+
-                          |  API (FastAPI)  -->  Postgres 17 + Apache AGE + graph_accel
-                          |                       persistent volume, in-RAM graph cache
-                          +----------------------------------------------------------+
+```mermaid
+%%{init: {"flowchart": {"curve": "basis"}, "themeVariables": {"fontSize": "14px"}}}%%
+flowchart TB
+    Browser(["🌐 Browser"])
+
+    subgraph CF["☁️ Cloudflare — edge (this repo)"]
+        direction TB
+        Pages["<b>Pages</b> · kg-viz-&lt;env&gt;<br/>viz-app SPA, build-once<br/>+ /config.js per-env (ADR-055)"]
+        Worker["<b>Worker</b> · kg-gateway-&lt;env&gt;<br/>proxy / route · R2 binding<br/>Hyperdrive (if PG direct)"]
+        R2[("<b>R2</b> · kg-assets-&lt;env&gt;<br/>object storage<br/>(replaces Garage)")]
+    end
+
+    subgraph RW["🚂 Railway — core (knowledge-graph-system)"]
+        direction TB
+        API["<b>API</b> · FastAPI"]
+        DB[("<b>Postgres 17</b> + Apache AGE + graph_accel<br/>persistent volume · in-RAM graph cache")]
+    end
+
+    Browser -->|"static"| Pages
+    Browser -->|"/api/*"| Worker
+    Worker --> R2
+    Worker -->|"HTTPS · origin trust token"| API
+    API --> DB
+
+    %% Dual-theme palette: explicit text colors per node so legibility
+    %% never depends on the viewer's light/dark background.
+    style CF fill:#f6821f1a,stroke:#d97706,stroke-width:2px,color:#d97706
+    style RW fill:#7c3aed1a,stroke:#8b5cf6,stroke-width:2px,color:#8b5cf6
+    style Browser fill:#475569,stroke:#94a3b8,stroke-width:2px,color:#ffffff
+    style Pages fill:#f6821f,stroke:#9a3412,stroke-width:1px,color:#1a1a1a
+    style Worker fill:#f6821f,stroke:#9a3412,stroke-width:1px,color:#1a1a1a
+    style R2 fill:#fbbf24,stroke:#92400e,stroke-width:1px,color:#1a1a1a
+    style API fill:#7c3aed,stroke:#4c1d95,stroke-width:1px,color:#ffffff
+    style DB fill:#6d28d9,stroke:#4c1d95,stroke-width:1px,color:#ffffff
 ```
 
 | Lives on Cloudflare | Lives on Railway |
