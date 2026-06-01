@@ -1,20 +1,8 @@
 ---
-name: mermaid-palette
-description: kg-cloud's dual-theme Mermaid palette — opaque per-node fills with per-fill text colors, mid-tone subgraph titles, so diagrams stay legible on GitHub light AND dark backgrounds.
-keywords:
-  - mermaid
-  - diagram
-  - flowchart
-  - palette
-  - color
-  - light mode
-  - dark mode
-  - topology diagram
-triggers:
-  files:
-    - "**/*.md"
-metadata:
-  type: project
+description: kg-cloud dual-theme Mermaid palette, light and dark mode safe diagram colors, opaque node fills with per-fill text colors
+vocabulary: mermaid diagram flowchart palette color light dark mode contrast cloudflare railway topology fill stroke
+scope: agent, subagent
+refire: 0.15
 ---
 <!-- epistemic: convention -->
 # kg-cloud Mermaid Palette Way
